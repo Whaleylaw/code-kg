@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "code-kg": {
+      "command": "code-kg",
+      "args": ["mcp"],
+      "cwd": "${CLAUDE_PROJECT_DIR}"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "code-kg",
+  "description": "Persistent, reviewable code knowledge graph for AI agents",
+  "version": "0.1.0",
+  "author": { "name": "Whaleylaw" },
+  "repository": "https://github.com/Whaleylaw/code-kg",
+  "license": "MIT"
+}
