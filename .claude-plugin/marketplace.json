@@ -1,0 +1,11 @@
+{
+  "name": "code-kg",
+  "owner": { "name": "Whaleylaw" },
+  "plugins": [
+    {
+      "name": "code-kg",
+      "source": "./plugins/code-kg",
+      "description": "Persistent, reviewable code knowledge graph for AI agents"
+    }
+  ]
+}
