@@ -3,6 +3,7 @@ import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { delimiter, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { CmdContext, CmdResult } from '../context.js';
+import { discoverProject } from './discovery.js';
 import { semanticDoctorStatus } from './semantic.js';
 
 const SECTION_START = '<!-- code-kg:agents:start -->';
@@ -699,4 +700,47 @@ export async function hookCheckCommand(
   if (!action) return { output: '' };
 
   return { output: hookNudgeOutput(action) };
+}
+
+type SessionCheckOptions = {
+  input?: string;
+};
+
+function sessionOfferContext(): string {
+  return [
+    'Code-KG: this repo has no knowledge graph yet.',
+    'If the user wants a persistent map for faster orientation, offer to run',
+    '`code-kg bootstrap --accept` (then `code-kg semantic enable-local` and',
+    '`code-kg semantic reindex`).',
+    "Do not run it without the user's go-ahead.",
+  ].join(' ');
+}
+
+function sessionNudgeOutput(): string {
+  return JSON.stringify({
+    hookSpecificOutput: {
+      hookEventName: 'SessionStart',
+      additionalContext: sessionOfferContext(),
+    },
+  });
+}
+
+export async function sessionCheckCommand(
+  ctx: CmdContext,
+  _opts: SessionCheckOptions = {},
+): Promise<CmdResult> {
+  // Already mapped: never re-offer.
+  if (codeKgKnowledgeBaseInstalled(ctx)) return { output: '' };
+
+  // Only offer in directories that look like a real codebase.
+  let hasCode = false;
+  try {
+    const discovery = await discoverProject(ctx.projectRoot);
+    hasCode = discovery.counts.code > 0;
+  } catch {
+    return { output: '' };
+  }
+  if (!hasCode) return { output: '' };
+
+  return { output: sessionNudgeOutput() };
 }

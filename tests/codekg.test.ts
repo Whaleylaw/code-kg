@@ -37,7 +37,11 @@ import { confidenceCommand } from '../src/codekg/confidence.js';
 import { suppressCommand } from '../src/codekg/suppress.js';
 import { applyBacklinksCommand } from '../src/codekg/backlinks.js';
 import { backlinkAnchorsForSection } from '../src/codekg/anchors.js';
-import { agentsCommand, hookCheckCommand } from '../src/codekg/agents.js';
+import {
+  agentsCommand,
+  hookCheckCommand,
+  sessionCheckCommand,
+} from '../src/codekg/agents.js';
 import { createCodeKgMcpServer } from '../src/codekg/mcp.js';
 import { doctorCommand } from '../src/codekg/doctor.js';
 import { discoverProject } from '../src/codekg/discovery.js';
@@ -2186,5 +2190,47 @@ describe('code-kg bootstrap', () => {
     expect(result.isError).toBeFalsy();
     expect(result.output).toContain('accepted promotion rel_arch_cross');
     expect(manifest.relationships.rel_arch_cross.status).toBe('accepted');
+  });
+});
+
+describe('session-check', () => {
+  it('offers bootstrap in an unmapped code repo', async () => {
+    const root = await makeProject();
+
+    const result = await sessionCheckCommand(ctx(root));
+    const parsed = JSON.parse(result.output) as {
+      hookSpecificOutput: {
+        hookEventName: string;
+        additionalContext: string;
+      };
+    };
+
+    expect(result.isError).toBeFalsy();
+    expect(parsed.hookSpecificOutput.hookEventName).toBe('SessionStart');
+    expect(parsed.hookSpecificOutput.additionalContext).toContain('Code-KG');
+    expect(parsed.hookSpecificOutput.additionalContext).toContain(
+      'code-kg bootstrap --accept',
+    );
+  });
+
+  it('stays silent once the repo is mapped', async () => {
+    const root = await makeProject();
+    await writeBootstrapPlan(await createBootstrapPlan(root));
+
+    const result = await sessionCheckCommand(ctx(root));
+
+    expect(result.isError).toBeFalsy();
+    expect(result.output).toBe('');
+  });
+
+  it('stays silent in a directory with no source code', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'codekg-noncode-'));
+    roots.push(root);
+    await writeFile(join(root, 'README.md'), '# just docs\n');
+
+    const result = await sessionCheckCommand(ctx(root));
+
+    expect(result.isError).toBeFalsy();
+    expect(result.output).toBe('');
   });
 });
