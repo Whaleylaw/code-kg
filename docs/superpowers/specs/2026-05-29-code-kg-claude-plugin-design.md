@@ -162,7 +162,7 @@ Behavior:
   silent).
 
 This lives in `src/codekg/agents.ts` alongside `hookCheckCommand`, wired into
-`src/codekg/cli.ts` and covered by tests in `tests/hook.test.ts` (mapped →
+`src/codekg/cli.ts` and covered by tests in `tests/codekg.test.ts` (mapped →
 silent, unmapped-code-repo → offer, non-code-dir → silent).
 
 The offer text is non-coercive, e.g.:
