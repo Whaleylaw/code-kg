@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Repository
+
+Git repository on branch `main`, with a GitHub remote at `origin` (https://github.com/Whaleylaw/code-kg, public). Push to sync. The committed knowledge base (`lat.md/*.md`, `.code-kg/materialization-manifest.json`) is tracked and meant to be committed alongside code changes; the artifacts in `## Generated/ignored artifacts` below are excluded via `.gitignore`.
+
 ## Source of Truth
 
 `docs/ARCHITECTURE.md` is the canonical merged architecture spec (~1100 lines) — the source of truth for product model, manifest schema, drift rules, and the MVP roadmap. Read the relevant section before changing behavior in those areas.
