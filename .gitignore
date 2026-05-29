@@ -1,0 +1,17 @@
+.DS_Store
+node_modules
+dist
+.pnpm-debug.log
+.mcp.json
+.cursor/mcp.json
+.claude
+.pi
+.opencode
+.agents
+.codex
+.cursor/hooks.json
+.cursor
+.code-kg/cache/
+.code-kg/search.sqlite
+.code-kg/tmp/
+lat.md/.cache/
