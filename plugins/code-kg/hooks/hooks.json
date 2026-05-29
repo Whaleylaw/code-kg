@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Grep|Glob|Read|LS",
+        "hooks": [
+          { "type": "command", "command": "code-kg hook-check" }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "code-kg session-check" }
+        ]
+      }
+    ]
+  }
+}
