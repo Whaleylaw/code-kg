@@ -113,6 +113,33 @@ broad source searches, `code-kg context <file-or-symbol>` before opening raw
 source files, and `code-kg changed` / `code-kg update` around code changes. See
 [docs/USAGE.md](docs/USAGE.md) for the tested happy path and common checks.
 
+## Use as a Claude Code Plugin
+
+This repo is also a Claude Code plugin marketplace. The plugin wires the global
+`code-kg` binary into Claude Code as an MCP server plus hooks, and ships a
+guidance skill.
+
+Prerequisites (once per machine): `code-kg install-global` so `code-kg` is on
+`PATH`.
+
+Install:
+
+```bash
+/plugin marketplace add Whaleylaw/code-kg
+/plugin install code-kg@code-kg
+```
+
+What it adds:
+
+- MCP server (`code-kg mcp`) — search, section, check, drift, confidence,
+  suppress, and backlink tools in any mapped repo.
+- A PreToolUse hook that nudges toward `code-kg search` / `code-kg context`
+  before broad grep/glob/read (silent in unmapped repos).
+- A SessionStart hook that offers to bootstrap unmapped code repos.
+- A guidance skill explaining the bootstrap and daily workflow.
+
+Map a repo with `code-kg bootstrap --accept` (see Daily Workflow above).
+
 ## Semantic Search Providers
 
 Semantic search is local-first. To use the built-in local embedding provider:
