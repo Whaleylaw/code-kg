@@ -542,6 +542,17 @@ program
   });
 
 program
+  .command('session-check')
+  .description('Run the safe Code-KG SessionStart bootstrap-offer check')
+  .action(async () => {
+    const ctx = rootOnlyContext();
+    const { sessionCheckCommand } = await import('./agents.js');
+    handleResult(
+      await sessionCheckCommand(ctx, { input: await readStdinIfAvailable() }),
+    );
+  });
+
+program
   .command('mcp')
   .description('Start the MCP server')
   .action(async () => {

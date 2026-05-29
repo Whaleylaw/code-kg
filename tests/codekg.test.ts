@@ -2233,4 +2233,29 @@ describe('session-check', () => {
     expect(result.isError).toBeFalsy();
     expect(result.output).toBe('');
   });
+
+  it('emits the offer through the built `session-check` CLI command', async () => {
+    const root = await makeProject();
+    const cliPath = join(
+      import.meta.dirname,
+      '..',
+      'dist',
+      'src',
+      'codekg',
+      'cli.js',
+    );
+
+    const run = execFile('node', [cliPath, 'session-check'], {
+      cwd: root,
+    });
+    // The hook reads stdin (mirroring `hook-check`); close it so the child
+    // sees EOF instead of blocking on the inherited pipe.
+    run.child.stdin?.end();
+    const { stdout } = await run;
+
+    const parsed = JSON.parse(stdout.trim()) as {
+      hookSpecificOutput: { hookEventName: string };
+    };
+    expect(parsed.hookSpecificOutput.hookEventName).toBe('SessionStart');
+  });
 });
