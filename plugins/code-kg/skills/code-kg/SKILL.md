@@ -40,8 +40,10 @@ code-kg doctor                  # readiness report
 
 ## MCP tools vs. CLI
 
-- **MCP tools** (available in any mapped repo): search, section, check, drift,
-  confidence, suppress, backlinks. Prefer these for queries and validation.
+- **MCP tools** (available in any mapped repo): `codekg_search`,
+  `codekg_section`, `codekg_locate`, `codekg_expand`, `codekg_check`,
+  `codekg_drift`, `codekg_confidence`, `codekg_suppress`, `codekg_refs`,
+  `codekg_apply_backlinks`. Prefer these for queries and validation.
 - **CLI via Bash** for everything not exposed over MCP: `bootstrap`, `doctor`,
   `semantic`, `context`, `gaps`, `changed`, `update`.
 
