@@ -1,0 +1,43 @@
+#!/bin/sh
+# Code-KG pre-commit hook
+# Keeps the lat.md/ knowledge graph in sync with every commit: regenerates the
+# generated sections, rebuilds the semantic index, validates, and stages the
+# tracked KB files so the knowledge update rides the SAME commit as the code.
+#
+# Bypass for a single commit with:  git commit --no-verify
+
+# Nothing to do if the code-kg CLI isn't on PATH.
+if ! command -v code-kg >/dev/null 2>&1; then
+  exit 0
+fi
+
+repo_root=$(git rev-parse --show-toplevel)
+
+# Only act in repos that actually have a Code-KG knowledge base.
+if [ ! -d "$repo_root/lat.md" ]; then
+  exit 0
+fi
+
+echo "[code-kg] syncing knowledge graph (materialize + semantic reindex + check + drift)..."
+
+# `code-kg update` exits non-zero only when `check` fails (broken links / invalid
+# metadata). Drift is advisory and does NOT block the commit.
+if ! code-kg --dir "$repo_root" update; then
+  echo ""
+  echo "[code-kg] update failed: 'code-kg check' did not pass (see output above)."
+  echo "[code-kg] Fix the reported issues, or bypass once with: git commit --no-verify"
+  exit 1
+fi
+
+# Stage the regenerated, tracked knowledge-base files into this commit.
+git -C "$repo_root" add lat.md ".code-kg/materialization-manifest.json" 2>/dev/null
+
+# Sections you hand-edited are never overwritten — instead a candidate lands in
+# merge-proposals/ for manual review. Surface that so it isn't missed.
+proposals_dir="$repo_root/.code-kg/cache/merge-proposals"
+if [ -d "$proposals_dir" ] && [ -n "$(ls -A "$proposals_dir" 2>/dev/null)" ]; then
+  echo "[code-kg] NOTE: merge proposals are pending in .code-kg/cache/merge-proposals/"
+  echo "[code-kg]       (edited/curated sections changed upstream — review them manually)."
+fi
+
+exit 0

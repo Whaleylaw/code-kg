@@ -29,20 +29,20 @@ The initial inventory groups files by broad category so later extraction can foc
 
 - Code files: 83
 - Test files: 8
-- Documentation files: 71
+- Documentation files: 76
 - Config files: 2
 - Asset files: 2
-- Unsupported files: 9
+- Unsupported files: 12
 
 ## Structural Graph
 
-Code-KG extracted a deterministic structural graph with 830 nodes, 840 edges, 4 communities using the multi-language-directory-fallback analysis path.
+Code-KG extracted a deterministic structural graph with 834 nodes, 844 edges, 4 communities using the multi-language-directory-fallback analysis path.
 
 ## Communities
 
 Directory-based communities provide the first subsystem map until graph clustering is available.
 
-- src: 58 files, 610 symbols, cohesion 1
+- src: 58 files, 614 symbols, cohesion 1
 - tests: 29 files, 117 symbols, cohesion 1
 - templates: 2 files, 9 symbols, cohesion 1
 - scripts: 1 files, 0 symbols, cohesion 1
@@ -75,9 +75,9 @@ These generated highlights come from deterministic file, symbol, and import extr
 
 ### src/codekg/agents.ts
 
-Source file `src/codekg/agents.ts` contains source symbols. Key symbols: `SECTION_START`, `SECTION_END`, and 50 more.
+Source file `src/codekg/agents.ts` contains source symbols. Key symbols: `SECTION_START`, `SECTION_END`, and 54 more.
 
-- Symbols: `SECTION_START (const)`, `SECTION_END (const)`, `CODEX_HOOK_COMMAND (const)`, `CODEX_HOOK_MATCHER (const)`, `GENERIC_SEARCH_COMMAND (const)`, `HookCommandSelection (type)`, `AgentsOptions (type)`, `HookCheckOptions (type)`, and 44 more
+- Symbols: `SECTION_START (const)`, `SECTION_END (const)`, `CODEX_HOOK_COMMAND (const)`, `CODEX_HOOK_MATCHER (const)`, `GENERIC_SEARCH_COMMAND (const)`, `HookCommandSelection (type)`, `AgentsOptions (type)`, `HookCheckOptions (type)`, and 48 more
 - Imports: none detected
 - Imported by: none detected
 

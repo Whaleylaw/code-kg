@@ -23,6 +23,7 @@
     "templates"
   ],
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks || true",
     "build": "tsc",
     "pretest": "tsc",
     "test": "vitest run",
